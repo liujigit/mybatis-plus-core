@@ -15,6 +15,8 @@
  */
 package com.baomidou.mybatisplus.core.enums;
 
+import com.baomidou.mybatisplus.core.toolkit.Constants;
+
 /**
  * MybatisPlus 支持 SQL 方法
  *
@@ -26,6 +28,19 @@ public enum SqlMethod {
      * 插入
      */
     INSERT_ONE("insert", "插入一条数据（选择字段插入）", "<script>\nINSERT INTO %s %s VALUES %s\n</script>"),
+
+    INSERT_RETURN("insertReturn", "插入一条数据（选择字段插入）并返回该数据", "<script>\nINSERT INTO %s %s VALUES %s "+Constants.RETURN+" %s\n</script>"),
+
+    /**
+     * pg库的upsert功能(insert on conflict do)的用法
+     */
+    UPSERT("upsert","保存或者根据冲突修改数据","<script>\nINSERT INTO %s %s VALUES %s ON CONFLICT(${"+ Constants.CONFLICT +"}) do %s\n</script>"),
+
+
+    UPSERT_RETURN("upsertReturn","保存或者根据冲突修改数据并返回该数据","<script>\nINSERT INTO %s %s VALUES %s ON CONFLICT(${"+ Constants.CONFLICT +"}) do %s "+Constants.RETURN+" %s\n</script>"),
+
+    UPDATE_RETURN("updateReturn", "根据 whereEntity 条件，更新记录并返回该数据", "<script>\nUPDATE %s %s %s %s "+Constants.RETURN+" %s\n</script>"),
+
     FIND("find","根据 entity 条件查询记录","<script>\nselect %s FROM %s %s\n</script>"),
     /**
      * 删除

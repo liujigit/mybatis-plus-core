@@ -87,50 +87,64 @@ public interface BaseMapper<T> extends Mapper<T> {
     /**
      * 插入一条记录
      *
+     * @param suffix 表名补充字段
      * @param entity 实体对象
+     * @return
      */
     int insert(@Param(Constants.SUFFIX) String suffix, @Param(Constants.ENTITY) T entity);
 
     /**
      * 根据 ID 删除
      *
-     * @param id 主键ID
+     * @param suffix 表名补充字段
+     * @param id     主键ID
+     * @return
      */
-    int deleteById(@Param(Constants.SUFFIX) String suffix, Serializable id);
+    int deleteById(@Param(Constants.SUFFIX) String suffix, @Param(Constants.ID) Serializable id);
 
     /**
      * 根据 columnMap 条件，删除记录
      *
+     * @param suffix
      * @param columnMap 表字段 map 对象
+     * @return
      */
     int deleteByMap(@Param(Constants.SUFFIX) String suffix, @Param(Constants.COLUMN_MAP) Map<String, Object> columnMap);
 
     /**
      * 根据 entity 条件，删除记录
      *
+     * @param suffix  表名补充字段
      * @param wrapper 实体对象封装操作类（可以为 null）
+     * @return
      */
     int delete(@Param(Constants.SUFFIX) String suffix, @Param(Constants.WRAPPER) Wrapper<T> wrapper);
 
     /**
      * 删除（根据ID 批量删除）
      *
+     * @param suffix 表名补充字段
      * @param idList 主键ID列表(不能为 null 以及 empty)
+     * @return
      */
     int deleteBatchIds(@Param(Constants.SUFFIX) String suffix, @Param(Constants.COLLECTION) Collection<? extends Serializable> idList);
 
     /**
      * 根据 ID 修改
      *
+     * @param suffix 表名补充字段
      * @param entity 实体对象
+     * @return
      */
     int updateById(@Param(Constants.SUFFIX) String suffix, @Param(Constants.ENTITY) T entity);
 
     /**
      * 根据 whereEntity 条件，更新记录
      *
+     * @param suffix        表名补充字段
      * @param entity        实体对象 (set 条件值,可以为 null)
      * @param updateWrapper 实体对象封装操作类（可以为 null,里面的 entity 用于生成 where 语句）
+     * @return
      */
     int update(@Param(Constants.SUFFIX) String suffix, @Param(Constants.ENTITY) T entity, @Param(Constants.WRAPPER) Wrapper<T> updateWrapper);
 
@@ -138,66 +152,89 @@ public interface BaseMapper<T> extends Mapper<T> {
     /**
      * 根据 对象（entity） 查询
      *
-     * @param suffix
-     * @param queryWrapper
+     * @param suffix       表名补充字段
+     * @param queryWrapper 实体对象封装操作类（可以为 null）
      * @return
      */
     List<T> find(@Param(Constants.SUFFIX) String suffix, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
 
-    default List<T> find(String appId, T entity) {
-        return this.find(appId, new QueryWrapper<>(entity));
+    /**
+     * @param suffix 表名补充字段
+     * @param entity 实体对象
+     * @return
+     */
+    default List<T> find(String suffix, T entity) {
+        return this.find(suffix, new QueryWrapper<>(entity));
     }
 
-    default List<T> find(String appId) {
-        return this.find(appId, (T) null);
+    /**
+     * @param suffix 表名补充字段
+     * @return
+     */
+    default List<T> find(String suffix) {
+        return this.find(suffix, (T) null);
     }
 
     /**
      * 根据 ID 查询
      *
-     * @param id 主键ID
+     * @param suffix 表名补充字段
+     * @param id     主键ID
+     * @return
      */
-    T selectById(@Param(Constants.SUFFIX) String suffix, Serializable id);
+    T selectById(@Param(Constants.SUFFIX) String suffix, @Param(Constants.ID) Serializable id);
 
     /**
      * 查询（根据ID 批量查询）
      *
+     * @param suffix 表名补充字段
      * @param idList 主键ID列表(不能为 null 以及 empty)
+     * @return
      */
     List<T> selectBatchIds(@Param(Constants.SUFFIX) String suffix, @Param(Constants.COLLECTION) Collection<? extends Serializable> idList);
 
     /**
      * 查询（根据 columnMap 条件）
      *
+     * @param suffix
      * @param columnMap 表字段 map 对象
+     * @return
      */
     List<T> selectByMap(@Param(Constants.SUFFIX) String suffix, @Param(Constants.COLUMN_MAP) Map<String, Object> columnMap);
 
     /**
      * 根据 entity 条件，查询一条记录
      *
+     * @param suffix       表名补充字段
      * @param queryWrapper 实体对象封装操作类（可以为 null）
+     * @return
      */
     T selectOne(@Param(Constants.SUFFIX) String suffix, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
 
     /**
      * 根据 Wrapper 条件，查询总记录数
      *
+     * @param suffix       表名补充字段
      * @param queryWrapper 实体对象封装操作类（可以为 null）
+     * @return
      */
     Integer selectCount(@Param(Constants.SUFFIX) String suffix, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
 
     /**
      * 根据 entity 条件，查询全部记录
      *
+     * @param suffix       表名补充字段
      * @param queryWrapper 实体对象封装操作类（可以为 null）
+     * @return
      */
     List<T> selectList(@Param(Constants.SUFFIX) String suffix, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
 
     /**
      * 根据 Wrapper 条件，查询全部记录
      *
+     * @param suffix       表名补充字段
      * @param queryWrapper 实体对象封装操作类（可以为 null）
+     * @return
      */
     List<Map<String, Object>> selectMaps(@Param(Constants.SUFFIX) String suffix, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
 
@@ -205,23 +242,29 @@ public interface BaseMapper<T> extends Mapper<T> {
      * 根据 Wrapper 条件，查询全部记录
      * <p>注意： 只返回第一个字段的值</p>
      *
+     * @param suffix       表名补充字段
      * @param queryWrapper 实体对象封装操作类（可以为 null）
+     * @return
      */
     List<Object> selectObjs(@Param(Constants.SUFFIX) String suffix, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
 
     /**
      * 根据 entity 条件，查询全部记录（并翻页）
      *
+     * @param suffix       表名补充字段
      * @param page         分页查询条件（可以为 RowBounds.DEFAULT）
      * @param queryWrapper 实体对象封装操作类（可以为 null）
+     * @return
      */
     IPage<T> selectPage(@Param(Constants.SUFFIX) String suffix, IPage<T> page, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
 
     /**
      * 根据 Wrapper 条件，查询全部记录（并翻页）
      *
+     * @param suffix       表名补充字段
      * @param page         分页查询条件
      * @param queryWrapper 实体对象封装操作类
+     * @return
      */
     IPage<Map<String, Object>> selectMapsPage(@Param(Constants.SUFFIX) String suffix, IPage<T> page, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
 }

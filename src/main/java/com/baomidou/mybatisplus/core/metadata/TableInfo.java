@@ -321,6 +321,17 @@ public class TableInfo implements Constants {
             }).map(i -> i.getSqlSet(newPrefix)).filter(Objects::nonNull).collect(joining(NEWLINE));
     }
 
+    public String getAllSqlUpsert(boolean ignoreLogicDelFiled, final String prefix) {
+        final String newPrefix = prefix == null ? EMPTY : prefix;
+        return fieldList.stream()
+                .filter(i -> {
+                    if (ignoreLogicDelFiled) {
+                        return !(isLogicDelete() && i.isLogicDelete());
+                    }
+                    return true;
+                }).map(i -> i.getSqlUpsert(newPrefix)).filter(Objects::nonNull).collect(joining(Constants.NEWLINE));
+    }
+
     /**
      * 获取逻辑删除字段的 sql 脚本
      *

@@ -1,4 +1,4 @@
-**基于mybatis-plus开发实现分表功能**
+**基于mybatis-plus开发实现分表功能（拓展支持postgre sql的语法conflict、returning）**
    
 一、修改说明：
      
@@ -24,3 +24,7 @@
                 <artifactId>mybatis-plus-core</artifactId>
                 <version>3.1.2-bate</version>
             </dependency>
+            
+三、升级说明：
+    
+    添加postgre sql语法的特殊支持（upsert、returning），mapper借口可以继承PgBaseMapper即可。

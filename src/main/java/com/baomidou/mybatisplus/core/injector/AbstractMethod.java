@@ -101,7 +101,7 @@ public abstract class AbstractMethod implements Constants {
         if (ew) {
             sqlScript += NEWLINE;
             sqlScript += SqlScriptUtils.convertIf(SqlScriptUtils.unSafeParam(U_WRAPPER_SQL_SET),
-                String.format("%s != null and %s != null", WRAPPER, U_WRAPPER_SQL_SET), false);
+                    String.format("%s != null and %s != null", WRAPPER, U_WRAPPER_SQL_SET), false);
         }
         sqlScript = SqlScriptUtils.convertSet(sqlScript);
         return sqlScript;
@@ -114,7 +114,7 @@ public abstract class AbstractMethod implements Constants {
      */
     protected String sqlComment() {
         return SqlScriptUtils.convertChoose(String.format("%s != null and %s != null", WRAPPER, Q_WRAPPER_SQL_COMMENT),
-            SqlScriptUtils.unSafeParam(Q_WRAPPER_SQL_COMMENT), EMPTY);
+                SqlScriptUtils.unSafeParam(Q_WRAPPER_SQL_COMMENT), EMPTY);
     }
 
     /**
@@ -135,7 +135,7 @@ public abstract class AbstractMethod implements Constants {
             return selectColumns;
         }
         return SqlScriptUtils.convertChoose(String.format("%s != null and %s != null", WRAPPER, Q_WRAPPER_SQL_SELECT),
-            SqlScriptUtils.unSafeParam(Q_WRAPPER_SQL_SELECT), selectColumns);
+                SqlScriptUtils.unSafeParam(Q_WRAPPER_SQL_SELECT), selectColumns);
     }
 
     /**
@@ -145,7 +145,7 @@ public abstract class AbstractMethod implements Constants {
      */
     protected String sqlCount() {
         return SqlScriptUtils.convertChoose(String.format("%s != null and %s != null", WRAPPER, Q_WRAPPER_SQL_SELECT),
-            SqlScriptUtils.unSafeParam(Q_WRAPPER_SQL_SELECT), ONE);
+                SqlScriptUtils.unSafeParam(Q_WRAPPER_SQL_SELECT), ONE);
     }
 
     /**
@@ -155,7 +155,7 @@ public abstract class AbstractMethod implements Constants {
      */
     protected String sqlSelectObjsColumns(TableInfo table) {
         return SqlScriptUtils.convertChoose(String.format("%s != null and %s != null", WRAPPER, Q_WRAPPER_SQL_SELECT),
-            SqlScriptUtils.unSafeParam(Q_WRAPPER_SQL_SELECT), table.getAllSqlSelect());
+                SqlScriptUtils.unSafeParam(Q_WRAPPER_SQL_SELECT), table.getAllSqlSelect());
     }
 
     /**
@@ -165,7 +165,7 @@ public abstract class AbstractMethod implements Constants {
         if (table.isLogicDelete()) {
             // 逻辑删除
             String sqlScript = SqlScriptUtils.convertChoose("v == null", " ${k} IS NULL ",
-                " ${k} = #{v} ");
+                    " ${k} = #{v} ");
             sqlScript = SqlScriptUtils.convertForeach(sqlScript, "cm", "k", "v", "AND");
             sqlScript = SqlScriptUtils.convertIf(sqlScript, "cm != null and !cm.isEmpty", true);
             sqlScript += (NEWLINE + table.getLogicDeleteSql(true, false));
@@ -173,11 +173,11 @@ public abstract class AbstractMethod implements Constants {
             return sqlScript;
         } else {
             String sqlScript = SqlScriptUtils.convertChoose("v == null", " ${k} IS NULL ",
-                " ${k} = #{v} ");
+                    " ${k} = #{v} ");
             sqlScript = SqlScriptUtils.convertForeach(sqlScript, COLUMN_MAP, "k", "v", "AND");
             sqlScript = SqlScriptUtils.convertWhere(sqlScript);
             sqlScript = SqlScriptUtils.convertIf(sqlScript, String.format("%s != null and !%s", COLUMN_MAP,
-                COLUMN_MAP_IS_EMPTY), true);
+                    COLUMN_MAP_IS_EMPTY), true);
             return sqlScript;
         }
     }
@@ -193,18 +193,18 @@ public abstract class AbstractMethod implements Constants {
         if (table.isLogicDelete()) {
             String sqlScript = table.getAllSqlWhere(true, true, WRAPPER_ENTITY_DOT);
             sqlScript = SqlScriptUtils.convertIf(sqlScript, String.format("%s != null", WRAPPER_ENTITY),
-                true);
+                    true);
             sqlScript += (NEWLINE + table.getLogicDeleteSql(true, false) + NEWLINE);
             String normalSqlScript = SqlScriptUtils.convertIf(String.format("AND ${%s}", WRAPPER_SQLSEGMENT),
-                String.format("%s != null and %s != '' and %s", WRAPPER_SQLSEGMENT, WRAPPER_SQLSEGMENT,
-                    WRAPPER_NONEMPTYOFNORMAL), true);
+                    String.format("%s != null and %s != '' and %s", WRAPPER_SQLSEGMENT, WRAPPER_SQLSEGMENT,
+                            WRAPPER_NONEMPTYOFNORMAL), true);
             normalSqlScript += NEWLINE;
             normalSqlScript += SqlScriptUtils.convertIf(String.format(" ${%s}", WRAPPER_SQLSEGMENT),
-                String.format("%s != null and %s != '' and %s", WRAPPER_SQLSEGMENT, WRAPPER_SQLSEGMENT,
-                    WRAPPER_EMPTYOFNORMAL), true);
+                    String.format("%s != null and %s != '' and %s", WRAPPER_SQLSEGMENT, WRAPPER_SQLSEGMENT,
+                            WRAPPER_EMPTYOFNORMAL), true);
             sqlScript += normalSqlScript;
             sqlScript = SqlScriptUtils.convertChoose(String.format("%s != null", WRAPPER), sqlScript,
-                table.getLogicDeleteSql(false, false));
+                    table.getLogicDeleteSql(false, false));
             sqlScript = SqlScriptUtils.convertWhere(sqlScript);
             return newLine ? NEWLINE + sqlScript : sqlScript;
         } else {
@@ -212,12 +212,12 @@ public abstract class AbstractMethod implements Constants {
             sqlScript = SqlScriptUtils.convertIf(sqlScript, String.format("%s != null", WRAPPER_ENTITY), true);
             sqlScript += NEWLINE;
             sqlScript += SqlScriptUtils.convertIf(String.format(SqlScriptUtils.convertIf(" AND", String.format("%s and %s", WRAPPER_NONEMPTYOFENTITY, WRAPPER_NONEMPTYOFNORMAL), false) + " ${%s}", WRAPPER_SQLSEGMENT),
-                String.format("%s != null and %s != '' and %s", WRAPPER_SQLSEGMENT, WRAPPER_SQLSEGMENT,
-                    WRAPPER_NONEMPTYOFWHERE), true);
+                    String.format("%s != null and %s != '' and %s", WRAPPER_SQLSEGMENT, WRAPPER_SQLSEGMENT,
+                            WRAPPER_NONEMPTYOFWHERE), true);
             sqlScript = SqlScriptUtils.convertWhere(sqlScript) + NEWLINE;
             sqlScript += SqlScriptUtils.convertIf(String.format(" ${%s}", WRAPPER_SQLSEGMENT),
-                String.format("%s != null and %s != '' and %s", WRAPPER_SQLSEGMENT, WRAPPER_SQLSEGMENT,
-                    WRAPPER_EMPTYOFWHERE), true);
+                    String.format("%s != null and %s != '' and %s", WRAPPER_SQLSEGMENT, WRAPPER_SQLSEGMENT,
+                            WRAPPER_EMPTYOFWHERE), true);
             sqlScript = SqlScriptUtils.convertIf(sqlScript, String.format("%s != null", WRAPPER), true);
             return newLine ? NEWLINE + sqlScript : sqlScript;
         }
@@ -237,9 +237,9 @@ public abstract class AbstractMethod implements Constants {
 
     protected String optlockVersion() {
         return "<if test=\"et instanceof java.util.Map\">" +
-            " AND ${et." + Constants.MP_OPTLOCK_VERSION_COLUMN +
-            "}=#{et." + Constants.MP_OPTLOCK_VERSION_ORIGINAL + StringPool.RIGHT_BRACE +
-            "</if>";
+                " AND ${et." + Constants.MP_OPTLOCK_VERSION_COLUMN +
+                "}=#{et." + Constants.MP_OPTLOCK_VERSION_ORIGINAL + StringPool.RIGHT_BRACE +
+                "</if>";
     }
 
     /**
@@ -251,7 +251,7 @@ public abstract class AbstractMethod implements Constants {
         if (null != resultMap) {
             /* 返回 resultMap 映射结果集 */
             return addMappedStatement(mapperClass, id, sqlSource, SqlCommandType.SELECT, null,
-                resultMap, null, new NoKeyGenerator(), null, null);
+                    resultMap, null, new NoKeyGenerator(), null, null);
         } else {
             /* 普通查询 */
             return addSelectMappedStatementForOther(mapperClass, id, sqlSource, table.getEntityType());
@@ -264,7 +264,7 @@ public abstract class AbstractMethod implements Constants {
     protected MappedStatement addSelectMappedStatementForOther(Class<?> mapperClass, String id, SqlSource sqlSource,
                                                                Class<?> resultType) {
         return addMappedStatement(mapperClass, id, sqlSource, SqlCommandType.SELECT, null,
-            null, resultType, new NoKeyGenerator(), null, null);
+                null, resultType, new NoKeyGenerator(), null, null);
     }
 
     /**
@@ -274,7 +274,23 @@ public abstract class AbstractMethod implements Constants {
                                                        SqlSource sqlSource, KeyGenerator keyGenerator,
                                                        String keyProperty, String keyColumn) {
         return addMappedStatement(mapperClass, id, sqlSource, SqlCommandType.INSERT, parameterType, null,
-            Integer.class, keyGenerator, keyProperty, keyColumn);
+                Integer.class, keyGenerator, keyProperty, keyColumn);
+    }
+
+    /**
+     * 插入
+     */
+    protected MappedStatement addReturnMappedStatement(TableInfo table, Class<?> mapperClass, Class<?> parameterType, String id,
+                                                       SqlSource sqlSource, KeyGenerator keyGenerator,
+                                                       String keyProperty, String keyColumn) {
+        String resultMap = table.getResultMap();
+        if (null != resultMap) {
+            return addMappedStatement(mapperClass, id, sqlSource, SqlCommandType.SELECT, parameterType, resultMap,
+                    null, keyGenerator, keyProperty, keyColumn);
+        } else {
+            return addMappedStatement(mapperClass, id, sqlSource, SqlCommandType.SELECT, parameterType, null,
+                    table.getEntityType(), keyGenerator, keyProperty, keyColumn);
+        }
     }
 
     /**
@@ -282,7 +298,7 @@ public abstract class AbstractMethod implements Constants {
      */
     protected MappedStatement addDeleteMappedStatement(Class<?> mapperClass, String id, SqlSource sqlSource) {
         return addMappedStatement(mapperClass, id, sqlSource, SqlCommandType.DELETE, null,
-            null, Integer.class, new NoKeyGenerator(), null, null);
+                null, Integer.class, new NoKeyGenerator(), null, null);
     }
 
     /**
@@ -291,7 +307,7 @@ public abstract class AbstractMethod implements Constants {
     protected MappedStatement addUpdateMappedStatement(Class<?> mapperClass, Class<?> parameterType, String id,
                                                        SqlSource sqlSource) {
         return addMappedStatement(mapperClass, id, sqlSource, SqlCommandType.UPDATE, parameterType, null,
-            Integer.class, new NoKeyGenerator(), null, null);
+                Integer.class, new NoKeyGenerator(), null, null);
     }
 
     /**
@@ -312,9 +328,9 @@ public abstract class AbstractMethod implements Constants {
             isSelect = true;
         }
         return builderAssistant.addMappedStatement(id, sqlSource, StatementType.PREPARED, sqlCommandType,
-            null, null, null, parameterType, resultMap, resultType,
-            null, !isSelect, isSelect, false, keyGenerator, keyProperty, keyColumn,
-            configuration.getDatabaseId(), languageDriver, null);
+                null, null, null, parameterType, resultMap, resultType,
+                null, !isSelect, isSelect, false, keyGenerator, keyProperty, keyColumn,
+                configuration.getDatabaseId(), languageDriver, null);
     }
 
     /**

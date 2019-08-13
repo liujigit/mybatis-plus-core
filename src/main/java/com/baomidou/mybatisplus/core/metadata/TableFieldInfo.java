@@ -430,7 +430,7 @@ public class TableFieldInfo implements Constants {
         if (fieldFill == FieldFill.INSERT || fieldFill == FieldFill.INSERT_UPDATE) {
             return sqlScript;
         }
-        return convertIf(sqlScript, newPrefix+property, insertStrategy);
+        return convertIf(sqlScript, newPrefix + property, insertStrategy);
     }
 
     /**
@@ -461,7 +461,7 @@ public class TableFieldInfo implements Constants {
         if (fieldFill == FieldFill.INSERT || fieldFill == FieldFill.INSERT_UPDATE) {
             return sqlScript;
         }
-        return convertIf(sqlScript, newPrefix+property, insertStrategy);
+        return convertIf(sqlScript, newPrefix + property, insertStrategy);
     }
 
     /**
@@ -501,6 +501,19 @@ public class TableFieldInfo implements Constants {
         return convertIf(sqlSet, newPrefix + property, updateStrategy);
     }
 
+    public String getSqlUpsert(final String prefix) {
+        final String newPrefix = prefix == null ? EMPTY : prefix;
+        // 默认: column=
+        String sqlSet = column + EQUALS;
+        if (StringUtils.isNotEmpty(update)) {
+            sqlSet += String.format(update, column);
+        } else {
+            sqlSet += (Constants.EXCLUDED_DOT+column);
+        }
+        sqlSet += COMMA;
+        return convertIf(sqlSet, newPrefix + property, updateStrategy);
+    }
+
     /**
      * 获取 查询的 sql 片段
      *
@@ -523,7 +536,7 @@ public class TableFieldInfo implements Constants {
      */
     ResultMapping getResultMapping(final MybatisConfiguration configuration) {
         ResultMapping.Builder builder = new ResultMapping.Builder(configuration, property,
-            StringUtils.getTargetColumn(column), propertyType);
+                StringUtils.getTargetColumn(column), propertyType);
         TypeHandlerRegistry registry = configuration.getTypeHandlerRegistry();
         if (jdbcType != null && jdbcType != JdbcType.UNDEFINED) {
             builder.jdbcType(jdbcType);
@@ -557,7 +570,7 @@ public class TableFieldInfo implements Constants {
         }
         if (targetStrategy == FieldStrategy.NOT_EMPTY && isCharSequence) {
             return SqlScriptUtils.convertIf(sqlScript, String.format("%s != null and %s != ''", property, property),
-                false);
+                    false);
         }
         return SqlScriptUtils.convertIf(sqlScript, String.format("%s != null", property), false);
     }

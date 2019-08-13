@@ -40,7 +40,29 @@ public interface Constants extends StringPool {
     /**
      * 表明的后缀 ${suffix}
      */
-    String SUFFIX="suffix";
+    String SUFFIX = "suffix";
+
+    /**
+     * 冲突字段
+     */
+    String CONFLICT = "conflict";
+
+    String NOTHING = "nothing";
+
+    String UPDATE = "update";
+
+    String SET="set";
+
+    String UPDATE_NEWLINE = UPDATE + NEWLINE;
+
+    String EXCLUDED = "excluded";
+
+    String EXCLUDED_DOT = EXCLUDED + DOT;
+
+    String RETURN="returning";
+
+    String ID="id";
+
     /**
      * 实体类 带后缀 ==> .
      */
@@ -89,6 +111,9 @@ public interface Constants extends StringPool {
      * UpdateWrapper 类的属性 sqlSet
      */
     String U_WRAPPER_SQL_SET = WRAPPER_DOT + "sqlSet";
+
+    String U_ENTITY_SQL_UPSERT = ENTITY_DOT + "sqlUpsert";
+
     /**
      * QueryWrapper 类的属性 sqlSelect
      */
