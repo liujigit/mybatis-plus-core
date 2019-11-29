@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.baomidou.mybatisplus.core.injector.methods;
+package com.baomidou.mybatisplus.core.injector.methods.pg;
 
 import com.baomidou.mybatisplus.core.injector.IAbstractMethod;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
@@ -25,10 +25,10 @@ import org.apache.ibatis.mapping.MappedStatement;
  * @author hubin
  * @since 2018-04-06
  */
-public class UpdateById extends IAbstractMethod {
+public class UpdateByIdReturn extends IAbstractMethod {
 
     @Override
     public MappedStatement injectMappedStatement(Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
-        return super.updateById(mapperClass, modelClass, tableInfo);
+        return super.updateByIdReturn(mapperClass, modelClass, tableInfo);
     }
 }

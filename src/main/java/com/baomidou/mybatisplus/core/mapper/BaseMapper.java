@@ -15,10 +15,12 @@
  */
 package com.baomidou.mybatisplus.core.mapper;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
+import com.baomidou.mybatisplus.core.util.AnnotationUtils;
 import org.apache.ibatis.annotations.Param;
 
 import java.io.Serializable;
@@ -267,4 +269,13 @@ public interface BaseMapper<T> extends Mapper<T> {
      * @return
      */
     IPage<Map<String, Object>> selectMapsPage(@Param(Constants.SUFFIX) String suffix, IPage<T> page, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
+
+    default int save(String suffix, T entity) {
+        Object id = AnnotationUtils.getFirst(entity, TableId.class);
+        if (id == null) {
+            return this.insert(suffix, entity);
+        } else {
+            return this.updateById(suffix, entity);
+        }
+    }
 }

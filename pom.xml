@@ -5,7 +5,7 @@
 
     <groupId>com.baomidou</groupId>
     <artifactId>mybatis-plus-core</artifactId>
-    <version>3.1.2-bate</version>
+    <version>3.1.2-SNAPSHOT</version>
 
     <properties>
         <java.version>1.8</java.version>
@@ -51,8 +51,36 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+            <!-- 要将源码放上去，需要加入这个插件 -->
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.1</version>
+                <configuration>
+                    <attach>true</attach>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
+
+    <distributionManagement>
+        <repository>
+            <id>snapshots</id>
+            <url>http://mvn.botbrain.ai/nexus/content/repositories/snapshots/</url>
+        </repository>
+        <!--<repository>
+            <id>releases</id>
+            <url>http://mvn.botbrain.ai/nexus/content/repositories/releases/</url>
+        </repository>-->
+
+    </distributionManagement>
 
 </project>

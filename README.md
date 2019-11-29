@@ -22,9 +22,10 @@
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-core</artifactId>
-                <version>3.1.2-bate</version>
+                <version>3.1.2-SNAPSHOT</version>
             </dependency>
             
 三、升级说明：
     
-    添加postgre sql语法的特殊支持（upsert、returning），mapper借口可以继承PgBaseMapper即可。
+    1、添加postgre sql语法的特殊支持（upsert、returning），mapper借口可以继承PgBaseMapper即可。
+    2、添加save、saveReturn

@@ -1,7 +1,9 @@
 package com.baomidou.mybatisplus.core.mapper;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
+import com.baomidou.mybatisplus.core.util.AnnotationUtils;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -38,6 +40,15 @@ public interface PgBaseMapper<T> extends BaseMapper<T> {
      */
     T upsertReturn(@Param(Constants.SUFFIX) String suffix, @Param(Constants.ENTITY) T entity, @Param(Constants.CONFLICT) String fieldName);
 
+
+    /**
+     * 根据 whereEntity 条件，更新记录
+     * @param suffix
+     * @param entity
+     * @return
+     */
+    T updateByIdReturn(@Param(Constants.SUFFIX) String suffix, @Param(Constants.ENTITY) T entity);
+
     /**
      * 根据 whereEntity 条件，更新记录
      *
@@ -47,5 +58,14 @@ public interface PgBaseMapper<T> extends BaseMapper<T> {
      * @return
      */
     List<T> updateReturn(@Param(Constants.SUFFIX) String suffix, @Param(Constants.ENTITY) T entity, @Param(Constants.WRAPPER) Wrapper<T> updateWrapper);
+
+    default T saveReturn(String suffix, T entity) {
+        Object id = AnnotationUtils.getFirst(entity, TableId.class);
+        if (id == null) {
+            return this.insertReturn(suffix, entity);
+        } else {
+            return this.updateByIdReturn(suffix, entity);
+        }
+    }
 
 }

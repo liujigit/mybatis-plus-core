@@ -202,7 +202,7 @@ public class TableInfo implements Constants {
     public String chooseSelect(Predicate<TableFieldInfo> predicate) {
         String sqlSelect = getKeySqlSelect();
         String fieldsSqlSelect = fieldList.stream().filter(predicate)
-            .map(TableFieldInfo::getSqlSelect).collect(joining(COMMA));
+                .map(TableFieldInfo::getSqlSelect).collect(joining(COMMA));
         if (StringUtils.isNotEmpty(sqlSelect) && StringUtils.isNotEmpty(fieldsSqlSelect)) {
             return sqlSelect + COMMA + fieldsSqlSelect;
         } else if (StringUtils.isNotEmpty(fieldsSqlSelect)) {
@@ -258,7 +258,7 @@ public class TableInfo implements Constants {
     public String getAllInsertSqlPropertyMaybeIf(final String prefix) {
         final String newPrefix = prefix == null ? EMPTY : prefix;
         return getKeyInsertSqlProperty(newPrefix, true) + fieldList.stream()
-            .map(i -> i.getInsertSqlPropertyMaybeIf(newPrefix)).filter(Objects::nonNull).collect(joining(NEWLINE));
+                .map(i -> i.getInsertSqlPropertyMaybeIf(newPrefix)).filter(Objects::nonNull).collect(joining(NEWLINE));
     }
 
     /**
@@ -272,8 +272,8 @@ public class TableInfo implements Constants {
      */
     public String getAllInsertSqlColumnMaybeIf(final String prefix) {
         final String newPrefix = prefix == null ? EMPTY : prefix;
-        return getKeyInsertSqlColumn(true) + fieldList.stream().map(item->item.getInsertSqlColumnMaybeIf(newPrefix))
-            .filter(Objects::nonNull).collect(joining(NEWLINE));
+        return getKeyInsertSqlColumn(true) + fieldList.stream().map(item -> item.getInsertSqlColumnMaybeIf(newPrefix))
+                .filter(Objects::nonNull).collect(joining(NEWLINE));
     }
 
     /**
@@ -287,20 +287,20 @@ public class TableInfo implements Constants {
     public String getAllSqlWhere(boolean ignoreLogicDelFiled, boolean withId, final String prefix) {
         final String newPrefix = prefix == null ? EMPTY : prefix;
         String filedSqlScript = fieldList.stream()
-            .filter(i -> {
-                if (ignoreLogicDelFiled) {
-                    return !(isLogicDelete() && i.isLogicDelete());
-                }
-                return true;
-            })
-            .map(i -> i.getSqlWhere(newPrefix)).filter(Objects::nonNull).collect(joining(NEWLINE));
+                .filter(i -> {
+                    if (ignoreLogicDelFiled) {
+                        return !(isLogicDelete() && i.isLogicDelete());
+                    }
+                    return true;
+                })
+                .map(i -> i.getSqlWhere(newPrefix)).filter(Objects::nonNull).collect(joining(NEWLINE));
         if (!withId || StringUtils.isEmpty(keyProperty)) {
             return filedSqlScript;
         }
         String newKeyProperty = newPrefix + keyProperty;
         String keySqlScript = keyColumn + EQUALS + SqlScriptUtils.safeParam(newKeyProperty);
         return SqlScriptUtils.convertIf(keySqlScript, String.format("%s != null", newKeyProperty), false)
-            + NEWLINE + filedSqlScript;
+                + NEWLINE + filedSqlScript;
     }
 
     /**
@@ -313,12 +313,12 @@ public class TableInfo implements Constants {
     public String getAllSqlSet(boolean ignoreLogicDelFiled, final String prefix) {
         final String newPrefix = prefix == null ? EMPTY : prefix;
         return fieldList.stream()
-            .filter(i -> {
-                if (ignoreLogicDelFiled) {
-                    return !(isLogicDelete() && i.isLogicDelete());
-                }
-                return true;
-            }).map(i -> i.getSqlSet(newPrefix)).filter(Objects::nonNull).collect(joining(NEWLINE));
+                .filter(i -> {
+                    if (ignoreLogicDelFiled) {
+                        return !(isLogicDelete() && i.isLogicDelete());
+                    }
+                    return true;
+                }).map(i -> i.getSqlSet(newPrefix)).filter(Objects::nonNull).collect(joining(NEWLINE));
     }
 
     public String getAllSqlUpsert(boolean ignoreLogicDelFiled, final String prefix) {
@@ -342,10 +342,10 @@ public class TableInfo implements Constants {
     public String getLogicDeleteSql(boolean startWithAnd, boolean deleteValue) {
         if (logicDelete) {
             TableFieldInfo field = fieldList.stream().filter(TableFieldInfo::isLogicDelete).findFirst()
-                .orElseThrow(() -> ExceptionUtils.mpe("can't find the logicFiled from table {%s}", tableName));
+                    .orElseThrow(() -> ExceptionUtils.mpe("can't find the logicFiled from table {%s}", tableName));
             String formatStr = field.isCharSequence() ? "'%s'" : "%s";
             String logicDeleteSql = field.getColumn() + EQUALS +
-                String.format(formatStr, deleteValue ? field.getLogicDeleteValue() : field.getLogicNotDeleteValue());
+                    String.format(formatStr, deleteValue ? field.getLogicDeleteValue() : field.getLogicNotDeleteValue());
             if (startWithAnd) {
                 logicDeleteSql = " AND " + logicDeleteSql;
             }
@@ -363,7 +363,7 @@ public class TableInfo implements Constants {
             List<ResultMapping> resultMappings = new ArrayList<>();
             if (keyType != null) {
                 ResultMapping idMapping = new ResultMapping.Builder(configuration, keyProperty, keyColumn, keyType)
-                    .flags(Collections.singletonList(ResultFlag.ID)).build();
+                        .flags(Collections.singletonList(ResultFlag.ID)).build();
                 resultMappings.add(idMapping);
             }
             if (CollectionUtils.isNotEmpty(fieldList)) {

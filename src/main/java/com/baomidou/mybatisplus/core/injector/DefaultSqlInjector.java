@@ -16,10 +16,7 @@
 package com.baomidou.mybatisplus.core.injector;
 
 import com.baomidou.mybatisplus.core.injector.methods.*;
-import com.baomidou.mybatisplus.core.injector.methods.pg.InsertReturn;
-import com.baomidou.mybatisplus.core.injector.methods.pg.UpdateReturn;
-import com.baomidou.mybatisplus.core.injector.methods.pg.Upsert;
-import com.baomidou.mybatisplus.core.injector.methods.pg.UpsertReturn;
+import com.baomidou.mybatisplus.core.injector.methods.pg.*;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -39,6 +36,7 @@ public class DefaultSqlInjector extends AbstractSqlInjector {
         return Stream.of(
                 new Insert(),
                 new InsertReturn(),
+                new UpdateByIdReturn(),
                 new Upsert(),
                 new UpsertReturn(),
                 new UpdateReturn(),
