@@ -29,3 +29,7 @@
     
     1、添加postgre sql语法的特殊支持（upsert、returning），mapper借口可以继承PgBaseMapper即可。
     2、添加save、saveReturn
+    
+四、信息
+    
+    **git**：https://github.com/liujigit/mybatis-plus-core
